@@ -1,0 +1,33 @@
+{
+  "name": "team-profile",
+  "version": "1.0.0",
+  "description": "A command line tool for the creation of team basic contact information",
+  "main": "index.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "scripts": {
+    "test": "jest --verbose"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/s-r-i-c-e/team-profile.git"
+  },
+  "keywords": [
+    "team",
+    "management",
+    "tool"
+  ],
+  "author": "Stephen Rice",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/s-r-i-c-e/team-profile/issues"
+  },
+  "homepage": "https://github.com/s-r-i-c-e/team-profile#readme",
+  "devDependencies": {
+    "jest": "^29.4.3"
+  },
+  "dependencies": {
+    "inquirer": "^8.2.5"
+  }
+}
