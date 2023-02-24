@@ -11,18 +11,35 @@ const outputPath = path.join(OUTPUT_DIR, "team.html");
 
 // const render = require("./src/page-template.js");
 
-let team = [];
-let questionOne = questions.openingQuestion;
-let employeeQuestions = questions.standardQuestions;
+const questionOne = questions.openingQuestion;
+const employeeQuestions = questions.standardQuestions;
+const managerQuestions = questions.management;
+const engineerQuestions = questions.engineer;
+const internQuestions = questions.intern;
 
-askQuestions();
+askQuestions([]);
 
-async function askQuestions() {
+async function askQuestions(team) {
     let { role } = await inquirer.prompt(questionOne);
     if (!(role === 'None')) {
         let { name, id, email } = await inquirer.prompt(employeeQuestions);
-        team.push({role : role, name : name, id : id, email : email});
-        askQuestions();
+        switch (role) {
+            case "Manager":
+                let { officeNumber } = await inquirer.prompt(managerQuestions);
+                team.push(new Manager(name, id, email, officeNumber));
+                break;
+            case "Engineer":
+                let { github } = await inquirer.prompt(engineerQuestions);
+                team.push(new Engineer(name, id, email, github));
+                break;
+            case "Intern":
+                let { school } = await inquirer.prompt(internQuestions);
+                team.push(new Intern(name, id, email, school));
+                break;
+            default:
+                break;
+        }
+        askQuestions(team);
     } else {
         render(team);
     }

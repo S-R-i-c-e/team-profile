@@ -17,6 +17,55 @@ const standardQuestions = [
             }
             return 'Please enter two names';
         }
-    }
+    },
+    {
+        type: 'input',
+        name: 'id',
+        message: "enter the employee's id-number",
+        validate(value) {
+            const pass = value.match(/^[0-9]+$/); // numeric string
+            if (pass) {
+                return true;
+            }
+            return "Please enter the manager's office number";
+        }
+    },
+    {
+        type: 'input',
+        name: 'email',
+        message: "enter the employee's email address",
+        validate(value) {
+            const pass = value.match(/^[^@\s]+@[^@\s]+\.[^@\s]+$/); // email structure verified only
+            if (pass) {
+                return true;
+            }
+            return "Please enter the employee's email address";
+        }
+    },
 ];
-module.exports = { openingQuestion, standardQuestions };
+
+const management = {
+    type: 'input',
+    name: 'officeNumber',
+    message: "enter the manager's office number",
+    validate(value) {
+        const pass = value.match(/^[0-9]+$/); // numeric string
+        if (pass) {
+            return true;
+        }
+        return "Please enter the manager's office number";
+    }
+}
+
+const engineer = {
+    type: 'input',
+    name: 'github',
+    message: "enter the engineer's github id",
+}
+
+const intern = {
+    type: 'input',
+    name: 'school',
+    message: "enter the interns's school",
+}
+module.exports = { openingQuestion, standardQuestions, management, engineer, intern };
