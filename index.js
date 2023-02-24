@@ -1,56 +1,49 @@
-const Manager = require("./lib/Manager");
-const Engineer = require("./lib/Engineer");
-const Intern = require("./lib/Intern");
-const inquirer = require("inquirer");
+const Manager = require("./lib/Manager");   // class Manager
+const Engineer = require("./lib/Engineer"); // class Engineer
+const Intern = require("./lib/Intern");     // class Intern
+const inquirer = require("inquirer");       // https://github.com/SBoudrias/Inquirer.js - with thanks.
 const path = require("path");
 const fs = require("fs/promises");
-const questions = require("./inquirer/questions");
+const questions = require("./inquirer/questions");  // five sets of questions used by inquirer.
 
 const OUTPUT_DIR = path.resolve(__dirname, "output");
 const outputPath = path.join(OUTPUT_DIR, "team.html");
 
-// const render = require("./src/page-template.js");
+const render = require("./src/page-template.js");
 
-const questionOne = questions.openingQuestion;
-const employeeQuestions = questions.standardQuestions;
-const managerQuestions = questions.management;
-const engineerQuestions = questions.engineer;
-const internQuestions = questions.intern;
+const roleQuestion = questions.openingQuestion;         // ask the employee role.
+const employeeQuestions = questions.standardQuestions;  // three questions common to all Employees. 
+const managerQuestion = questions.management;           // question unique to Manager.
+const engineerQuestion = questions.engineer;            // question unique to Engineer.
+const internQuestion = questions.intern;                // question unique to Intern.
 
-askQuestions([]);
+
+
+askQuestions([]); // program starts passing an empty array to store Manager, Engineer, or Intern instances.
 
 async function askQuestions(team) {
-    let { role } = await inquirer.prompt(questionOne);
-    if (!(role === 'None')) {
-        let { name, id, email } = await inquirer.prompt(employeeQuestions);
-        switch (role) {
+    let { role } = await inquirer.prompt(roleQuestion);                         // first establish the employee role.
+    if (!(role === 'None')) {                                                   // if no role selected drop out to create page.
+        let { name, id, email } = await inquirer.prompt(employeeQuestions);     // otherwise ask the standard Employee questions.
+        switch (role) {                                                         // then choose the appropriate question and instance creation.
             case "Manager":
-                let { officeNumber } = await inquirer.prompt(managerQuestions);
+                let { officeNumber } = await inquirer.prompt(managerQuestion);
                 team.push(new Manager(name, id, email, officeNumber));
                 break;
             case "Engineer":
-                let { github } = await inquirer.prompt(engineerQuestions);
+                let { github } = await inquirer.prompt(engineerQuestion);
                 team.push(new Engineer(name, id, email, github));
                 break;
             case "Intern":
-                let { school } = await inquirer.prompt(internQuestions);
+                  let { school } = await inquirer.prompt(internQuestion);
                 team.push(new Intern(name, id, email, school));
                 break;
             default:
                 break;
         }
-        askQuestions(team);
+        askQuestions(team);                                                     // ask again until all employee data entered.
     } else {
-        render(team);
+        let htmlDoc = render(team);                                             // all employee data entered - create the webpage.
+        await fs.writeFile(outputPath, htmlDoc);                                // write the html page to file. 
     }
 }
-
-function render(employees) {
-    employees.forEach(employee => {
-        console.log(employee);
-    });
-}
-
-// let htmlDoc = render(team);
-
-// await fs.writeFile(outputPath, htmlDoc);

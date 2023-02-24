@@ -1,3 +1,9 @@
+/*
+ *  ./questions.js
+ *  five sets of questions to determine the employee's role, standard questions relating to all employees,
+ *  and three questions eacjh tailored to the specific type of employee. 
+ */
+
 const openingQuestion = {
     type: 'list',
     name: 'role',
